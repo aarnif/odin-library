@@ -3,6 +3,7 @@ const books = document.getElementById("books");
 const overlay = document.getElementById("overlay");
 const modal = document.getElementById("modal");
 const newBookButton = document.getElementById("new-book");
+const cancelButton = document.getElementById("cancel-button");
 const form = document.getElementById("book-form");
 
 function Book(title, author, pages, read) {
@@ -17,41 +18,50 @@ function addBookToLibrary(title, author, pages, read) {
   myLibrary.push(newBook);
 }
 
-function addRemoveBookButtonItem(index) {
-  const removeBookItem = document.createElement("li");
-  const removeBookButton = document.createElement("button");
-  removeBookButton.setAttribute("data", index);
-  removeBookButton.textContent = "Remove";
+function deleteBookFromLibrary(bookIndex) {
+  myLibrary.splice(bookIndex, 1);
+}
 
-  removeBookButton.addEventListener("click", (e) => {
+function addRemoveBookIconItem(index) {
+  const removeBookItem = document.createElement("li");
+  const trashIcon = document.createElement("img");
+
+  trashIcon.classList.add("remove-icon");
+  trashIcon.src = "assets/icons/trash-can-outline.svg";
+  trashIcon.setAttribute("data", index);
+
+  trashIcon.addEventListener("click", (e) => {
     const bookIndex = e.target.getAttribute("data");
-    const removedBook = myLibrary[bookIndex];
-    console.log(`Remove book: ${removedBook.title}`);
-    myLibrary.splice(index, 1);
-    updateLibrary();
-    console.log(myLibrary);
+    handleDeleteBookFromLibrary(bookIndex);
   });
 
-  removeBookItem.appendChild(removeBookButton);
+  removeBookItem.appendChild(trashIcon);
 
   return removeBookItem;
 }
 
-function addReadButtonItem(index) {
+function addReadIconItem(index) {
   const findBook = myLibrary[index];
   const readBookItem = document.createElement("li");
-  const readBookButton = document.createElement("button");
-  readBookButton.setAttribute("data", index);
-  readBookButton.textContent = !findBook.read ? "Read" : "Not Read";
+  const readIcon = document.createElement("img");
+  const unReadIcon = document.createElement("img");
 
-  readBookButton.addEventListener("click", (e) => {
+  readIcon.classList.add("read-icon");
+  readIcon.src = "assets/icons/book-check.svg";
+
+  unReadIcon.classList.add("read-icon");
+  unReadIcon.src = "assets/icons/book-cancel.svg";
+
+  readBookItem.addEventListener("click", (e) => {
     findBook.read = !findBook.read;
     console.log(`Read book: ${findBook.title}`);
     updateLibrary();
     console.log(myLibrary);
   });
 
-  readBookItem.appendChild(readBookButton);
+  findBook.read
+    ? readBookItem.appendChild(readIcon)
+    : readBookItem.appendChild(unReadIcon);
 
   return readBookItem;
 }
@@ -59,25 +69,48 @@ function addReadButtonItem(index) {
 function createBookCard(book, index) {
   const bookCard = document.createElement("div");
   bookCard.setAttribute("data", index);
+  bookCard.classList.add("book-card");
   const bookCardItems = document.createElement("ul");
+  bookCardItems.classList.add("book-card-items");
 
   for (const key in book) {
     const bookCardItem = document.createElement("li");
-
-    if (key === "read") {
-      bookCardItem.textContent = `${key}: ${book[key] ? "read" : "not read"}`;
-    } else {
-      bookCardItem.textContent = `${key}: ${book[key]}`;
+    if (key === "title") {
+      const title = document.createElement("h2");
+      title.classList.add("book-title");
+      title.textContent = book[key];
+      bookCardItem.appendChild(title);
+    } else if (key === "author") {
+      const author = document.createElement("h3");
+      author.classList.add("book-author");
+      author.textContent = `By ${book[key]}`;
+      bookCardItem.appendChild(author);
+    } else if (key === "read") {
+      const read = document.createElement("p");
+      read.classList.add("book-read");
+      read.textContent = `${key[0].toUpperCase() + key.slice(1)}: ${
+        book[key] ? "read" : "not read"
+      }`;
+      bookCardItem.appendChild(read);
+    } else if (key === "pages") {
+      const pages = document.createElement("p");
+      pages.classList.add("book-pages");
+      pages.textContent = `Length: ${book[key]} pages`;
+      bookCardItem.appendChild(pages);
     }
     bookCardItems.appendChild(bookCardItem);
   }
 
-  const removeBookItem = addRemoveBookButtonItem(index);
-  const readBookItem = addReadButtonItem(index);
+  const bookCardIcons = document.createElement("ul");
+  bookCardIcons.classList.add("book-card-icons");
 
-  bookCardItems.appendChild(removeBookItem);
-  bookCardItems.appendChild(readBookItem);
+  const readBookItem = addReadIconItem(index);
+  const removeBookItem = addRemoveBookIconItem(index);
+
+  bookCardIcons.appendChild(readBookItem);
+  bookCardIcons.appendChild(removeBookItem);
   bookCard.appendChild(bookCardItems);
+  bookCard.appendChild(bookCardIcons);
   return bookCard;
 }
 
@@ -96,34 +129,47 @@ function updateLibrary() {
   displayLibrary();
 }
 
-function newBookModal() {
-  overlay.style.visibility = "visible";
-  modal.style.visibility = "visible";
+function showNewBookModal() {
+  overlay.classList.toggle("active");
+  modal.classList.toggle("active");
 }
 
-function removeBookModal() {
-  modal.style.visibility = "hidden";
-  overlay.style.visibility = "hidden";
+function hideNewBookModal() {
+  modal.classList.toggle("active");
+  overlay.classList.toggle("active");
 }
 
-function submitBookToLibrary(title, author, pages, read) {
+function handleAddBookToLibrary(title, author, pages, read) {
   addBookToLibrary(title, author, parseInt(pages), read);
   console.log(`Add book: ${title}`);
   console.log(myLibrary);
-  removeBookModal();
+  hideNewBookModal();
   updateLibrary();
 }
 
-newBookButton.addEventListener("click", newBookModal);
+function handleDeleteBookFromLibrary(bookIndex) {
+  const removedBook = myLibrary[bookIndex];
+  console.log(`Remove book: ${removedBook.title}`);
+  deleteBookFromLibrary(bookIndex);
+  updateLibrary();
+  console.log(myLibrary);
+}
+
+newBookButton.addEventListener("click", showNewBookModal);
+cancelButton.addEventListener("click", hideNewBookModal);
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  submitBookToLibrary(
+  handleAddBookToLibrary(
     event.target.title.value,
     event.target.author.value,
     event.target.pages.value,
     event.target.read.checked
   );
+  event.target.title.value = "";
+  event.target.author.value = "";
+  event.target.pages.value = "";
+  event.target.read.checked = false;
 });
 
 addBookToLibrary("The Great Gatsby", "F. Scott Fitzgerald", 218, true);

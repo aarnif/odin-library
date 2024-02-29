@@ -4,47 +4,93 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Odin Library</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="header-and-footer.css" />
+    <link rel="stylesheet" href="new-book.css" />
     <script defer src="script.js"></script>
   </head>
   <body>
     <div id="wrapper">
-      <h1>Library</h1>
-      <ul id="books"></ul>
-      <button id="new-book">NEW BOOK</button>
+      <header id="header">
+        <div class="header-content">
+          <h1 class="header-title">Library</h1>
+          <button id="new-book">
+            <img
+              id="new-book-icon"
+              src="assets/icons/plus.svg"
+              alt="new book"
+            />
+          </button>
+        </div>
+      </header>
+      <main id="main"><ul id="books"></ul></main>
+      <footer id="footer">
+        <div id="footer-text">Created By aarnif</div>
+        <a href="https://github.com/aarnif" target="_blank" rel="noreferrer"
+          ><img
+            id="github-icon"
+            src="assets/images/github.svg"
+            alt="GitHub Profile Link"
+          />
+        </a>
+      </footer>
+      <div id="modal">
+        <h2 class="form-header">New book</h2>
+        <form id="book-form">
+          <ul class="form-items">
+            <li class="form-item">
+              <label for="title">Title</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Title"
+                required
+              />
+            </li>
+            <li class="form-item">
+              <label for="Author">Author</label>
+              <input
+                type="text"
+                id="author"
+                name="author"
+                placeholder="Author"
+                required
+              />
+            </li>
+            <li class="form-item">
+              <label for="pages">Pages</label>
+              <input
+                type="number"
+                id="pages"
+                name="pages"
+                placeholder="Pages"
+                min="1"
+                required
+              />
+            </li>
+            <li class="form-item" id="form-item-read">
+              <label for="read">Have you read the book?</label>
+              <input type="checkbox" id="read" name="read" />
+            </li>
+            <li id="form-submit">
+              <button type="button" id="cancel-button" class="form-button">
+                CANCEL
+              </button>
+              <button type="submit" id="submit-button" class="form-button">
+                SUBMIT
+              </button>
+            </li>
+          </ul>
+        </form>
+      </div>
     </div>
     <div id="overlay"></div>
-    <div id="modal">
-      <h2>Add a new book</h2>
-      <form id="book-form">
-        <label for="title">Title</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          placeholder="title"
-          required
-        />
-        <label for="author">Author</label>
-        <input
-          type="text"
-          id="author"
-          name="author"
-          placeholder="author"
-          required
-        />
-        <label for="pages">Pages</label>
-        <input
-          type="number"
-          id="pages"
-          name="pages"
-          placeholder="pages"
-          required
-        />
-        <label for="read">Read</label>
-        <input type="checkbox" id="read" name="read" />
-        <button type="submit" id="submit">SUBMIT</button>
-      </form>
-    </div>
   </body>
 </html>

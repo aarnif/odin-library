@@ -1,0 +1,119 @@
+#modal {
+  visibility: hidden;
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f1f5f9;
+  box-shadow: var(--shadow);
+  border-radius: var(--border-radius);
+  transform: scale(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+#modal.active {
+  visibility: visible;
+  transform: scale(1);
+}
+
+#book-form {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-header {
+  margin: 10px;
+  font-size: var(--h2-font-size);
+  font-weight: var(--header-font-weight);
+}
+
+.form-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+}
+
+.form-item > label {
+  font-size: var(--h3-font-size);
+  font-weight: var(--subheader-font-weight);
+}
+
+.form-item > input {
+  margin-top: 4px;
+  padding: 8px;
+  background-color: #e2e8f0;
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  font-size: var(--h3-font-size);
+}
+
+.form-item > input:hover {
+  background-color: #cbd5e1;
+}
+
+#form-item-read {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  outline: 1px solid #0f172a;
+  accent-color: var(--header-and-footer-background-color);
+}
+
+#form-submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-button {
+  width: 140px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  background-color: var(--header-and-footer-background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  font-size: var(--body-font-size);
+  font-weight: var(--header-font-weight);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.form-button:active {
+  transform: scale(0.9);
+}
+
+#cancel-button {
+  background-color: #ef4444;
+}
+
+#cancel-button:hover {
+  background-color: #dc2626;
+}
+
+#submit-button {
+  background-color: #22c55e;
+}
+
+#submit-button:hover {
+  background-color: #16a34a;
+}
