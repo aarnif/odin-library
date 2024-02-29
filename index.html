@@ -4,13 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Odin Library</title>
-    <link ref="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="script.js"></script>
   </head>
   <body>
     <div id="wrapper">
       <h1>Library</h1>
       <ul id="books"></ul>
+      <button id="new-book">NEW BOOK</button>
+    </div>
+    <div id="overlay"></div>
+    <div id="modal">
+      <h2>Add a new book</h2>
+      <form id="book-form">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" placeholder="title" />
+        <label for="author">Author</label>
+        <input type="text" id="author" name="author" placeholder="author" />
+        <label for="pages">Pages</label>
+        <input type="number" id="pages" name="pages" placeholder="pages" />
+        <label for="read">Read</label>
+        <input type="checkbox" id="read" name="read" />
+        <button type="submit" id="submit">SUBMIT</button>
+      </form>
     </div>
   </body>
 </html>
