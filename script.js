@@ -17,7 +17,8 @@ function addBookToLibrary(title, author, pages, read) {
   myLibrary.push(newBook);
 }
 
-function addRemoveBookButton(index) {
+function addRemoveBookButtonItem(index) {
+  const removeBookItem = document.createElement("li");
   const removeBookButton = document.createElement("button");
   removeBookButton.setAttribute("data", index);
   removeBookButton.textContent = "Remove";
@@ -31,7 +32,28 @@ function addRemoveBookButton(index) {
     console.log(myLibrary);
   });
 
-  return removeBookButton;
+  removeBookItem.appendChild(removeBookButton);
+
+  return removeBookItem;
+}
+
+function addReadButtonItem(index) {
+  const findBook = myLibrary[index];
+  const readBookItem = document.createElement("li");
+  const readBookButton = document.createElement("button");
+  readBookButton.setAttribute("data", index);
+  readBookButton.textContent = !findBook.read ? "Read" : "Not Read";
+
+  readBookButton.addEventListener("click", (e) => {
+    findBook.read = !findBook.read;
+    console.log(`Read book: ${findBook.title}`);
+    updateLibrary();
+    console.log(myLibrary);
+  });
+
+  readBookItem.appendChild(readBookButton);
+
+  return readBookItem;
 }
 
 function createBookCard(book, index) {
@@ -50,11 +72,11 @@ function createBookCard(book, index) {
     bookCardItems.appendChild(bookCardItem);
   }
 
-  const bookCardItem = document.createElement("li");
-  const removeBookButton = addRemoveBookButton(index);
+  const removeBookItem = addRemoveBookButtonItem(index);
+  const readBookItem = addReadButtonItem(index);
 
-  bookCardItem.appendChild(removeBookButton);
-  bookCardItems.appendChild(bookCardItem);
+  bookCardItems.appendChild(removeBookItem);
+  bookCardItems.appendChild(readBookItem);
   bookCard.appendChild(bookCardItems);
   return bookCard;
 }
