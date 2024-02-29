@@ -17,12 +17,31 @@ function addBookToLibrary(title, author, pages, read) {
   myLibrary.push(newBook);
 }
 
-function createBookCard(book) {
+function addRemoveBookButton(index) {
+  const removeBookButton = document.createElement("button");
+  removeBookButton.setAttribute("data", index);
+  removeBookButton.textContent = "Remove";
+
+  removeBookButton.addEventListener("click", (e) => {
+    const bookIndex = e.target.getAttribute("data");
+    const removedBook = myLibrary[bookIndex];
+    console.log(`Remove book: ${removedBook.title}`);
+    myLibrary.splice(index, 1);
+    updateLibrary();
+    console.log(myLibrary);
+  });
+
+  return removeBookButton;
+}
+
+function createBookCard(book, index) {
   const bookCard = document.createElement("div");
+  bookCard.setAttribute("data", index);
   const bookCardItems = document.createElement("ul");
 
   for (const key in book) {
     const bookCardItem = document.createElement("li");
+
     if (key === "read") {
       bookCardItem.textContent = `${key}: ${book[key] ? "read" : "not read"}`;
     } else {
@@ -31,6 +50,11 @@ function createBookCard(book) {
     bookCardItems.appendChild(bookCardItem);
   }
 
+  const bookCardItem = document.createElement("li");
+  const removeBookButton = addRemoveBookButton(index);
+
+  bookCardItem.appendChild(removeBookButton);
+  bookCardItems.appendChild(bookCardItem);
   bookCard.appendChild(bookCardItems);
   return bookCard;
 }
@@ -39,8 +63,7 @@ function displayLibrary() {
   const books = document.getElementById("books");
   myLibrary.forEach((book, index) => {
     const listElement = document.createElement("li");
-    const bookCard = createBookCard(book);
-    bookCard.setAttribute("data", index);
+    const bookCard = createBookCard(book, index);
     listElement.appendChild(bookCard);
     books.appendChild(listElement);
   });
@@ -63,7 +86,7 @@ function removeBookModal() {
 
 function submitBookToLibrary(title, author, pages, read) {
   addBookToLibrary(title, author, parseInt(pages), read);
-  console.log("New book added!");
+  console.log(`Add book: ${title}`);
   console.log(myLibrary);
   removeBookModal();
   updateLibrary();
